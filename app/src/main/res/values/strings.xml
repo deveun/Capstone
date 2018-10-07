@@ -1,6 +1,14 @@
 <resources>
     <string name="app_name">BlockVoting</string>
-    <string name="title">투표 제목: </string>
-    <string name="content">투표 내용: </string>
-    <string name="date"> - </string>
+    <string name="title">투표 제목:\t</string>
+    <string name="content">투표 내용:\t</string>
+    <string name="date">\t-\t</string>
+
+    <string name="cert_title">본인인증</string>
+    <string name="cert_name">이름:\t</string>
+    <string name="cert_num">번호:\t</string>
+
+    <string name="ok">확인</string>
+    <string name="cancel">취소</string>
 </resources>
+
