@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">BlockVoting</string>
+    <string name="title">투표 제목: </string>
+    <string name="content">투표 내용: </string>
+    <string name="date"> - </string>
 </resources>
