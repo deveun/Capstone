@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
                 Toast.makeText(MainActivity.this,certName.getText().toString() + certNum.getText().toString(),Toast.LENGTH_SHORT).show();
 
+
                 //추후 server에서 값이 확인될 경우에만 수행/ 다음화면 전환, 변수 전달
                 Intent intent= new Intent(MainActivity.this, VotingActivity.class);
                 startActivity(intent);
