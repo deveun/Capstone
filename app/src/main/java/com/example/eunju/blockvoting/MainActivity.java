@@ -1,28 +1,86 @@
 package com.example.eunju.blockvoting;
 
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    //final int ITEM_SIZE = 5;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ///////////////////////////////////////////////////////////////////////
+        try {
+            Intent intent = getIntent();
+            String userID = intent.getStringExtra("userID");
+            String userPassword = intent.getStringExtra("userPassword");
+            JSONObject jsonObject = new JSONObject(intent.getStringExtra("voteList"));
+            JSONArray jsonArray = jsonObject.getJSONArray("response");
 
+            int count = 0;
+            String voteName, voteContent, voteSdate, voteEdate;
+            List<VoteItem> items = new ArrayList<>();
+
+            //ArrayList에 투표정보를 담은 객체 저장
+            while(count<jsonArray.length())
+            {
+                JSONObject object = jsonArray.getJSONObject(count);
+                voteName= object.getString("voteName");
+                voteContent=object.getString("voteContent");
+                voteSdate= object.getString("voteSdate");
+                voteEdate= object.getString("voteEdate");
+
+                items.add(new VoteItem(voteName,voteContent,voteSdate,voteEdate));
+                count++;
+            }
+
+            RecyclerView recyclerView = (RecyclerView) findViewById(R.id.vote_Recycler);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setLayoutManager(layoutManager);
+
+            recyclerView.setAdapter(new VoteListAdapter(getApplicationContext(), items, R.layout.activity_main));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //////////////////////////////////////////////////////////////////////
+        /*
+            List<VoteItem> items = new ArrayList<>();
+            VoteItem[] item = new VoteItem[ITEM_SIZE];
+            item[0] = new VoteItem(voteList, "2018-10-30", "2018-11-30");
+            item[1] = new VoteItem(userID, "2018-10-30", "2018-11-30");
+            item[2] = new VoteItem(userPassword, "2018-10-30", "2018-11-30");
+            item[3] = new VoteItem("#4", "2018-10-30", "2018-11-30");
+            item[4] = new VoteItem("#5", "2018-10-30", "2018-11-30");
+
+            for (int i = 0; i < ITEM_SIZE; i++) {
+                items.add(item[i]);
+            }
+
+            RecyclerView recyclerView = (RecyclerView) findViewById(R.id.vote_Recycler);
+            LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+            recyclerView.setHasFixedSize(true);
+            recyclerView.setLayoutManager(layoutManager);
+
+            recyclerView.setAdapter(new VoteListAdapter(getApplicationContext(), items, R.layout.activity_main));
+     */   }
+    }
+
+
+/*
         //추후 String 변수값은 서버에서 받아오기.
-        ServerData data= new ServerData("2018.10.10", "2018.11.10", "테스트 투표", "내용 설명");
+        voteListData data= new voteListData("2018.10.10", "2018.11.10", "테스트 투표", "내용 설명");
 
         //activity_main.xml 의 elements 연결
         TextView date = findViewById(R.id.date);
@@ -77,4 +135,5 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-}
+    }*/
+

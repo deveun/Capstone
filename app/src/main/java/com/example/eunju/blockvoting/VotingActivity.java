@@ -19,7 +19,7 @@ public class VotingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_voting);
 
-        List<Item> items = new ArrayList<>();
+        /*List<Item> items = new ArrayList<>();
         Item[] item = new Item[ITEM_SIZE];
         item[0] = new Item("#1");
         item[1] = new Item("#2");
@@ -36,7 +36,7 @@ public class VotingActivity extends AppCompatActivity {
         TextView content = findViewById(R.id.content1);
 
         //elements의 Text설정
-        ServerData data = new ServerData();
+        voteListData data = new voteListData();
         date.setText(data.getVote_sdate().concat(getString(R.string.date).concat(data.getVote_edate())));
         title.setText(getString(R.string.title).concat(data.getVote_title()));
         content.setText(getString(R.string.content).concat(data.getVote_content()));
@@ -46,6 +46,7 @@ public class VotingActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(layoutManager);
 
-        recyclerView.setAdapter(new RecyclerAdapter(getApplicationContext(), items, R.layout.activity_voting));
+        recyclerView.setAdapter(new VoteListAdapter(getApplicationContext(), items, R.layout.activity_voting));
     }
 }
+*/}}

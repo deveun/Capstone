@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".LoadingActivity">
+    tools:context=".LoginActivity">
 
 
     <EditText
@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Name" />
+        android:text="최은주" />
 
     <EditText
         android:id="@+id/user_Password"
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPassword"
-        android:text="Password" />
+        android:text="20123423" />
 
     <Button
         android:id="@+id/login_Button"

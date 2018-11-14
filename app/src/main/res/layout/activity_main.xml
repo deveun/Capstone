@@ -7,50 +7,14 @@
     android:layout_margin="20dp"
     tools:context=".MainActivity">
 
-    <TextView
-        android:id="@+id/date"
-        android:layout_width="0dp"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/vote_Recycler"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/date"
-        android:textSize="16sp"
+        android:layout_weight="9"
+        android:paddingBottom="0dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.458"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="@string/title"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/date" />
-
-    <TextView
-        android:id="@+id/content"
-        android:layout_width="0dp"
-        android:layout_height="100dp"
-        android:text="@string/content"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title" />
-
-    <Button
-        android:id="@+id/startButton"
-        android:layout_width="118dp"
-        android:layout_height="wrap_content"
-        android:onClick="onClickVote"
-        android:text="투표하기"
-        android:textSize="18sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/content" />
 
 </android.support.constraint.ConstraintLayout>
