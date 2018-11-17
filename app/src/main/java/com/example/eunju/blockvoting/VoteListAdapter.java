@@ -2,6 +2,7 @@ package com.example.eunju.blockvoting;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,6 +12,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -46,30 +58,50 @@ public class VoteListAdapter extends RecyclerView.Adapter<VoteListAdapter.ViewHo
         holder.cardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, item.getName(), Toast.LENGTH_SHORT).show();
-
                 //날짜비교
-
                 try {
-                    Date _sdate= new SimpleDateFormat("yyyy-MM-dd").parse(item.getSdate());
-                    Date _edate= new SimpleDateFormat("yyyy-MM-dd").parse(item.getEdate());
-                    Date _curdate= new Date();
+                    Date _sdate = new SimpleDateFormat("yyyy-MM-dd").parse(item.getSdate());
+                    Date _edate = new SimpleDateFormat("yyyy-MM-dd").parse(item.getEdate());
+                    Date _curdate = new Date();
 
                     //Toast.makeText(context, new SimpleDateFormat("yyyy-MM-dd").format(_curCal), Toast.LENGTH_SHORT).show();
                     //Toast.makeText(context, new SimpleDateFormat("yyyy-MM-dd").format(_sCal), Toast.LENGTH_SHORT).show();
-                    if(_curdate.compareTo(_sdate) >= 0 && _curdate.compareTo(_edate) <= 0)
-                        {
-                            Intent intent = new Intent(context, VotingActivity.class);
-                            //변수 전달
-                            //intent.putExtra("userID", userID);
-                            intent.putExtra("voteName", item.getName());
-                            intent.putExtra("voteContent", item.getContent());
-                            intent.putExtra("voteSdate", item.getSdate());
-                            intent.putExtra("voteEdate", item.getEdate());
-                            context.startActivity(intent);
-                            }
-                    else if(_curdate.compareTo(_sdate) < 0)
+                    if (_curdate.compareTo(_sdate) >= 0 && _curdate.compareTo(_edate) <= 0) {
+
+                            //server 연결 후보자 리스트가져오기
+                            Response.Listener<String> responseListener = new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    try {
+                                        Toast.makeText(context, response, Toast.LENGTH_SHORT).show();
+                                        //JSONObject jsonResponse = new JSONObject(response);
+                                       // String candidateList = jsonResponse.getString("response");
+
+                                        //화면전환
+                                        Intent intent = new Intent(context, VotingActivity.class);
+                                        //변수 전달
+                                        intent.putExtra("userNum", item.getuserNum());
+                                        intent.putExtra("voteName", item.getName());
+                                        intent.putExtra("voteContent", item.getContent());
+                                        intent.putExtra("voteSdate", item.getSdate());
+                                        intent.putExtra("voteEdate", item.getEdate());
+                                        intent.putExtra("candidateList", response);
+                                        context.startActivity(intent);
+
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                        Toast.makeText(context, "Exception", Toast.LENGTH_SHORT).show();
+                                    }
+                                }};
+
+                            CandidateRequest candidateRequest = new CandidateRequest(item.getvoteNum(), responseListener);
+                            RequestQueue queue = Volley.newRequestQueue(context);
+                            queue.add(candidateRequest);
+
+
+                    } else if (_curdate.compareTo(_sdate) < 0)
                         Toast.makeText(context, "투표진행 예정", Toast.LENGTH_SHORT).show();
+                        //결과화면 이동////////////////////////////////////////////////////////////////////
                     else
                         Toast.makeText(context, "투표기간 종료", Toast.LENGTH_SHORT).show();
 

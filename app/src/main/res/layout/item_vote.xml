@@ -28,7 +28,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:padding="10dp"
-                android:text="e" />
+                android:text="s" />
 
             <TextView
                 android:id="@+id/vote_edate"
@@ -36,7 +36,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
                 android:padding="10dp"
-                android:text="s" />
+                android:text="e" />
 
             <TextView
                 android:id="@+id/vote_name"

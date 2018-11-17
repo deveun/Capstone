@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="최은주" />
+        android:text="abc" />
 
     <EditText
         android:id="@+id/user_Password"
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="textPassword"
-        android:text="20123423" />
+        android:text="123" />
 
     <Button
         android:id="@+id/login_Button"

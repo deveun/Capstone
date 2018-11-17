@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -22,12 +23,13 @@ public class MainActivity extends AppCompatActivity {
         ///////////////////////////////////////////////////////////////////////
         try {
             Intent intent = getIntent();
+            int userNum = intent.getIntExtra("userNum",0);
             String userID = intent.getStringExtra("userID");
-            String userPassword = intent.getStringExtra("userPassword");
             JSONObject jsonObject = new JSONObject(intent.getStringExtra("voteList"));
             JSONArray jsonArray = jsonObject.getJSONArray("response");
 
             int count = 0;
+            int voteNum;
             String voteName, voteContent, voteSdate, voteEdate;
             List<VoteItem> items = new ArrayList<>();
 
@@ -35,12 +37,13 @@ public class MainActivity extends AppCompatActivity {
             while(count<jsonArray.length())
             {
                 JSONObject object = jsonArray.getJSONObject(count);
+                voteNum= object.getInt("voteNum");
                 voteName= object.getString("voteName");
                 voteContent=object.getString("voteContent");
                 voteSdate= object.getString("voteSdate");
                 voteEdate= object.getString("voteEdate");
 
-                items.add(new VoteItem(voteName,voteContent,voteSdate,voteEdate));
+                items.add(new VoteItem(userNum,voteNum,voteName,voteContent,voteSdate,voteEdate));
                 count++;
             }
 
@@ -53,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             e.printStackTrace();
+            Toast.makeText(MainActivity.this, "exception", Toast.LENGTH_SHORT).show();
         }
         //////////////////////////////////////////////////////////////////////
         /*
@@ -75,7 +79,8 @@ public class MainActivity extends AppCompatActivity {
 
             recyclerView.setAdapter(new VoteListAdapter(getApplicationContext(), items, R.layout.activity_main));
      */   }
-    }
+
+}
 
 
 /*

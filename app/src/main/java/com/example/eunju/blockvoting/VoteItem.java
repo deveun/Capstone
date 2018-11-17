@@ -1,12 +1,16 @@
 package com.example.eunju.blockvoting;
 
-import java.util.Date;
-
 public class VoteItem {
+    int userNum;
+    int voteNum;
     String votename;
     String votecontent;
     String vote_sdate;
     String vote_edate;
+
+    int getuserNum() { return this.userNum;}
+
+    int getvoteNum() { return this.voteNum;}
 
     String getName() {
         return this.votename;
@@ -22,7 +26,9 @@ public class VoteItem {
 
     String getContent() { return this.votecontent;}
 
-    VoteItem(String votename, String votecontent, String vote_sdate, String vote_edate)  {
+    VoteItem(int userNum, int voteNum, String votename, String votecontent, String vote_sdate, String vote_edate)  {
+        this.userNum= userNum;
+        this.voteNum= voteNum;
         this.votename = votename;
         this.votecontent = votecontent;
         this.vote_sdate = vote_sdate;

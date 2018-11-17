@@ -15,35 +15,35 @@
     tools:layout_editor_absoluteY="8dp">
 
     <TextView
-        android:id="@+id/date1"
+        android:id="@+id/date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/date"
         android:textSize="16sp" />
 
     <TextView
-        android:id="@+id/title1"
+        android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/title"
-        android:textSize="20sp" />
+        android:textSize="10sp" />
 
     <TextView
-        android:id="@+id/content1"
+        android:id="@+id/content"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="wrap_content"
         android:text="@string/content"
         android:textSize="20sp" />
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recyclerview"
+        android:id="@+id/candidate_Recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="9"
         android:paddingBottom="0dp" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/vote_Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"

@@ -28,7 +28,7 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_loading);
+        setContentView(R.layout.activity_login);
 
         Button Login = (Button) findViewById(R.id.login_Button);
     }
@@ -50,19 +50,19 @@ public class LoginActivity extends AppCompatActivity {
                     JSONObject jsonResponse = new JSONObject(response);
                     boolean success = jsonResponse.getBoolean("success");
                     if (success) {
+                        int userNum = jsonResponse.getInt("userNum");
                         String userID = jsonResponse.getString("userID");
-                        String userPassword = jsonResponse.getString("userPassword");
 
                         //화면전환 전에 리스트 정보 받아오기
                         String voteList = new BackgroundTask().execute().get();
+                        Toast.makeText(LoginActivity.this, voteList, Toast.LENGTH_SHORT).show();
                         //server에서 값이 확인될 경우에만 수행/ 다음화면 전환, 변수 전달
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         //변수 전달
+                        intent.putExtra("userNum", userNum);
                         intent.putExtra("userID", userID);
-                        intent.putExtra("userPassword", userPassword);
                         intent.putExtra("voteList", voteList);
                         LoginActivity.this.startActivity(intent);
-                        //Toast.makeText(LoginActivity.this, voteList+"?", Toast.LENGTH_SHORT).show();
                     } else {
                         AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
                         builder.setMessage("존재하지 않는 사용자입니다. 다시 시도해주세요.")
