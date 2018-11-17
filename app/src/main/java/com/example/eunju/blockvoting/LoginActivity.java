@@ -55,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
 
                         //화면전환 전에 리스트 정보 받아오기
                         String voteList = new BackgroundTask().execute().get();
-                        Toast.makeText(LoginActivity.this, voteList, Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(LoginActivity.this, voteList, Toast.LENGTH_SHORT).show();
                         //server에서 값이 확인될 경우에만 수행/ 다음화면 전환, 변수 전달
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         //변수 전달

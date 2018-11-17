@@ -1,11 +1,15 @@
 package com.example.eunju.blockvoting;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -22,7 +26,7 @@ import java.util.Map;
 
 public class VotingActivity extends AppCompatActivity {
 
-   final int ITEM_SIZE = 5;
+    final int ITEM_SIZE = 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,13 +35,15 @@ public class VotingActivity extends AppCompatActivity {
 
         ////////////////////////
         try {
+            //MainActivity 에서 Intent로 변수 받기
             Intent intent = getIntent();
-            int userNum = intent.getIntExtra("userNum", 0);
+            final int userNum = intent.getIntExtra("userNum", 0);
             int voteNum = intent.getIntExtra("voteNum", 0);
             String voteName = intent.getStringExtra("voteName");
             String voteContent = intent.getStringExtra("voteContent");
             String voteSdate = intent.getStringExtra("voteSdate");
-            String voteEdate = intent.getStringExtra("voteEdate");;
+            String voteEdate = intent.getStringExtra("voteEdate");
+            ;
 
             JSONObject jsonObject = new JSONObject(intent.getStringExtra("candidateList"));
             JSONArray jsonArray = jsonObject.getJSONArray("response");
@@ -57,12 +63,11 @@ public class VotingActivity extends AppCompatActivity {
             String candidateName;
 
             //ArrayList에 후보자 정보를 담은 객체 저장
-            while(count<jsonArray.length())
-            {
+            while (count < jsonArray.length()) {
                 JSONObject object = jsonArray.getJSONObject(count);
-                candidateNum= object.getInt("candidateNum");
-                candidateName= object.getString("candidateName");
-                items.add(new CandidateItem(candidateNum, candidateName));
+                candidateNum = object.getInt("candidateNum");
+                candidateName = object.getString("candidateName");
+                items.add(new CandidateItem(userNum, candidateNum, candidateName));
                 count++;
             }
 
@@ -70,12 +75,69 @@ public class VotingActivity extends AppCompatActivity {
             LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
             recyclerView.setHasFixedSize(true);
             recyclerView.setLayoutManager(layoutManager);
-            recyclerView.setAdapter(new CandidateListAdapter(getApplicationContext(), items, R.layout.activity_voting));
+
+            //CallBack 설정 Step4
+            CandidateListAdapter adapter = new CandidateListAdapter(VotingActivity.this, items, R.layout.activity_voting);
+            adapter.setOnCallBackEvent(new CandidateListAdapter.CallBackListener() {
+                @Override
+                public void onReceivedEvent(final int candidateNum, final String candidateName) {
+
+                    //Button Click
+                    Button voteButton = findViewById(R.id.vote_Button);
+                    voteButton.setOnClickListener(new Button.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            // TODO : click event
+                            AlertDialog.Builder builder = new AlertDialog.Builder(VotingActivity.this);
+                            builder.setTitle("투표");
+                            builder.setMessage("정말로"+candidateName+"에게 투표하시겠습니까?");
+                            builder.setPositiveButton("예",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            Toast.makeText(VotingActivity.this, "Send "+userNum+", "+candidateNum, Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+                            builder.setNegativeButton("아니오",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            Toast.makeText(VotingActivity.this, "취소", Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+                            builder.show();
+                        }
+                    });
+                    Toast.makeText(VotingActivity.this, candidateName + candidateNum, Toast.LENGTH_SHORT).show();
+                }
+            });
+            recyclerView.setAdapter(adapter);
 
         } catch (Exception e) {
-        e.printStackTrace();
-        Toast.makeText(VotingActivity.this, "exception", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+            Toast.makeText(VotingActivity.this, "exception", Toast.LENGTH_SHORT).show();
+        }
     }
+
+    /*//투표버튼을 누르면 최종으로 투표여부 확인
+    public void onClickVote(View v) {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("투표");
+        builder.setMessage("정말로 ???에게 투표하시겠습니까?");
+        builder.setPositiveButton("예",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(VotingActivity.this, "예를 선택했습니다.", Toast.LENGTH_LONG).show();
+                    }
+                });
+        builder.setNegativeButton("아니오",
+                new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(VotingActivity.this, "취소", Toast.LENGTH_LONG).show();
+                    }
+                });
+        builder.show();
+    }*/
+}
 
         /*List<Item> items = new ArrayList<>();
         Item[] item = new Item[ITEM_SIZE];
@@ -107,4 +169,4 @@ public class VotingActivity extends AppCompatActivity {
         recyclerView.setAdapter(new VoteListAdapter(getApplicationContext(), items, R.layout.activity_voting));
     }
 }
-*/}}
+}*/

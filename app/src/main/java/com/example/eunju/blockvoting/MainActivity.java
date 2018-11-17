@@ -15,15 +15,14 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-    //final int ITEM_SIZE = 5;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ///////////////////////////////////////////////////////////////////////
+
         try {
             Intent intent = getIntent();
-            int userNum = intent.getIntExtra("userNum",0);
+            int userNum = intent.getIntExtra("userNum", 0);
             String userID = intent.getStringExtra("userID");
             JSONObject jsonObject = new JSONObject(intent.getStringExtra("voteList"));
             JSONArray jsonArray = jsonObject.getJSONArray("response");
@@ -34,16 +33,15 @@ public class MainActivity extends AppCompatActivity {
             List<VoteItem> items = new ArrayList<>();
 
             //ArrayList에 투표정보를 담은 객체 저장
-            while(count<jsonArray.length())
-            {
+            while (count < jsonArray.length()) {
                 JSONObject object = jsonArray.getJSONObject(count);
-                voteNum= object.getInt("voteNum");
-                voteName= object.getString("voteName");
-                voteContent=object.getString("voteContent");
-                voteSdate= object.getString("voteSdate");
-                voteEdate= object.getString("voteEdate");
+                voteNum = object.getInt("voteNum");
+                voteName = object.getString("voteName");
+                voteContent = object.getString("voteContent");
+                voteSdate = object.getString("voteSdate");
+                voteEdate = object.getString("voteEdate");
 
-                items.add(new VoteItem(userNum,voteNum,voteName,voteContent,voteSdate,voteEdate));
+                items.add(new VoteItem(userNum, voteNum, voteName, voteContent, voteSdate, voteEdate));
                 count++;
             }
 
@@ -53,12 +51,12 @@ public class MainActivity extends AppCompatActivity {
             recyclerView.setLayoutManager(layoutManager);
 
             recyclerView.setAdapter(new VoteListAdapter(getApplicationContext(), items, R.layout.activity_main));
-
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(MainActivity.this, "exception", Toast.LENGTH_SHORT).show();
         }
-        //////////////////////////////////////////////////////////////////////
+    }
+}
         /*
             List<VoteItem> items = new ArrayList<>();
             VoteItem[] item = new VoteItem[ITEM_SIZE];
@@ -78,9 +76,7 @@ public class MainActivity extends AppCompatActivity {
             recyclerView.setLayoutManager(layoutManager);
 
             recyclerView.setAdapter(new VoteListAdapter(getApplicationContext(), items, R.layout.activity_main));
-     */   }
-
-}
+     */
 
 
 /*

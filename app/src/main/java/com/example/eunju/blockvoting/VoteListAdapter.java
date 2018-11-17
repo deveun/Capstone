@@ -73,9 +73,9 @@ public class VoteListAdapter extends RecyclerView.Adapter<VoteListAdapter.ViewHo
                                 @Override
                                 public void onResponse(String response) {
                                     try {
-                                        Toast.makeText(context, response, Toast.LENGTH_SHORT).show();
+                                        //Toast.makeText(context, response, Toast.LENGTH_SHORT).show();
                                         //JSONObject jsonResponse = new JSONObject(response);
-                                       // String candidateList = jsonResponse.getString("response");
+                                        //String candidateList = jsonResponse.getString("response");
 
                                         //화면전환
                                         Intent intent = new Intent(context, VotingActivity.class);
