@@ -5,13 +5,17 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.media.Image;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -58,19 +62,32 @@ public class CandidateListAdapter extends RecyclerView.Adapter<CandidateListAdap
         final CandidateItem item = items.get(position);
         holder.candidateName.setText(item.getCandidateName());
 
-        //리스트 클릭
+        //리스트 클릭 (Dialog Inflate)
         holder.cardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
                 //Candidate Detail Dialog 생성
                 LayoutInflater vi=(LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 LinearLayout linearLayout=(LinearLayout)vi.inflate(R.layout.dialog_detail,null);
-
-                TextView candidateName = (TextView)view.findViewById(R.id.candidate_name_detail);
-                TextView candidateDetail = (TextView)view.findViewById(R.id.candidate_detail);
+                //Dialog Elements에 Candidate 정보 삽입
+                ImageView candidateImg = (ImageView)linearLayout.findViewById(R.id.candidate_image);
+                TextView candidateDetail = (TextView)linearLayout.findViewById(R.id.candidate_detail);
 
                 final AlertDialog.Builder adb=new AlertDialog.Builder(context);
                 adb.setTitle(item.getCandidateName());
+
+                //Info
+                candidateDetail.setText(item.getCandidateInfo());
+                //img 작업 (Bitmap -> Size -> ImageView)
+                try{
+                    Bitmap image = item.getImageUrl();
+                    Bitmap smaller = Bitmap.createScaledBitmap(image, 100, 50, false);
+                    candidateImg.setImageBitmap(image);
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
+
+
                 adb.setView(linearLayout);
                 //뒤로가기 불가
                 //adb.setCancelable(false);

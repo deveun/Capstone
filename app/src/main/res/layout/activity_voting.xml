@@ -19,7 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/date"
-        android:textSize="16sp" />
+        android:textSize="10sp" />
 
     <TextView
         android:id="@+id/title"
@@ -33,7 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/content"
-        android:textSize="20sp" />
+        android:textSize="10sp" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/candidate_Recycler"

@@ -6,18 +6,16 @@
 
     $voteNum = $_POST["voteNum"];
 
-    $result = mysqli_query($con,"SELECT voteNum, candidateNum, candidateName FROM CANDIDATE");
+    $result = mysqli_query($con,"SELECT * FROM CANDIDATE");
     $response = array();
-    $trash = array();
 
     while($row=mysqli_fetch_array($result)){
 
 	if($voteNum == $row[0])
 {
-  		array_push($response, array("voteNum"=>$row[0], "candidateNum"=>$row[1], "candidateName"=>$row[2]));}
-	else
-		array_push($trash, array("voteNum"=>$row[0], "candidateNum" =>$row[1], "candidateName"=>$row[2]));
+  		array_push($response, array("voteNum"=>$row[0], "candidateNum"=>$row[1],
+		"candidateName"=>$row[2], "candidateInfo"=>$row[3], "img"=>base64_encode($row[4])));}
 }
 
-	echo json_encode(array("response"=>$response));
+	echo json_encode(array("response"=>$response), JSON_UNESCAPED_SLASHES);
 ?>

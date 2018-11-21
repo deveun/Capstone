@@ -3,10 +3,13 @@ package com.example.eunju.blockvoting;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Base64;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -20,6 +23,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +36,8 @@ public class VotingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_voting);
+        getSupportActionBar().setTitle("후보자 선택");
+
 
         ////////////////////////
         try {
@@ -43,7 +49,6 @@ public class VotingActivity extends AppCompatActivity {
             String voteContent = intent.getStringExtra("voteContent");
             String voteSdate = intent.getStringExtra("voteSdate");
             String voteEdate = intent.getStringExtra("voteEdate");
-            ;
 
             JSONObject jsonObject = new JSONObject(intent.getStringExtra("candidateList"));
             JSONArray jsonArray = jsonObject.getJSONArray("response");
@@ -52,29 +57,39 @@ public class VotingActivity extends AppCompatActivity {
             TextView title = findViewById(R.id.title);
             TextView content = findViewById(R.id.content);
 
-            //elements Text설정
+            //elements Text설정 (선택 투표 정보)
             date.setText(voteSdate.concat(getString(R.string.date).concat(voteEdate)));
             title.setText(getString(R.string.title).concat(voteName));
             content.setText(getString(R.string.content).concat(voteContent));
+            //content.setText(intent.getStringExtra("candidateList"));
 
             List<CandidateItem> items = new ArrayList<>();
             int count = 0;
             int candidateNum;
-            String candidateName;
+            String candidateName, candidateInfo, encodedImg;
+            Bitmap imageUrl;
 
             //ArrayList에 후보자 정보를 담은 객체 저장
             while (count < jsonArray.length()) {
                 JSONObject object = jsonArray.getJSONObject(count);
                 candidateNum = object.getInt("candidateNum");
                 candidateName = object.getString("candidateName");
-                items.add(new CandidateItem(userNum, candidateNum, candidateName));
+                candidateInfo = object.getString("candidateInfo");
+                encodedImg = object.getString("img");
+
+                //Base64_encode 된 String값을 다시 decode하여 Bitmap으로 변환시키는 과정
+                byte[] decodedByteArray = Base64.decode(encodedImg, Base64.DEFAULT);
+                Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
+
+                items.add(new CandidateItem(userNum, candidateNum, candidateName, candidateInfo, decodedBitmap));
                 count++;
             }
+
 
             RecyclerView recyclerView = (RecyclerView) findViewById(R.id.candidate_Recycler);
             LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
             recyclerView.setHasFixedSize(true);
-            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setLayoutManager(layoutManager); //... CandidateListAdapter에 구현
 
             //CallBack 설정 Step4
             CandidateListAdapter adapter = new CandidateListAdapter(VotingActivity.this, items, R.layout.activity_voting);
@@ -113,7 +128,7 @@ public class VotingActivity extends AppCompatActivity {
 
         } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(VotingActivity.this, "exception", Toast.LENGTH_SHORT).show();
+            Toast.makeText(VotingActivity.this, "exception1", Toast.LENGTH_SHORT).show();
         }
     }
 
