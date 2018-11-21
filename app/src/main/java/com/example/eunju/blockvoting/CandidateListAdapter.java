@@ -80,7 +80,7 @@ public class CandidateListAdapter extends RecyclerView.Adapter<CandidateListAdap
                 candidateDetail.setText(item.getCandidateInfo());
                 //img 작업 (Bitmap -> Size -> ImageView)
                 try{
-                    Bitmap image = item.getImageUrl();
+                    Bitmap image = item.getImage();
                     Bitmap smaller = Bitmap.createScaledBitmap(image, 100, 50, false);
                     candidateImg.setImageBitmap(image);
                 } catch(Exception e) {

@@ -65,7 +65,7 @@ public class VotingActivity extends AppCompatActivity {
 
             List<CandidateItem> items = new ArrayList<>();
             int count = 0;
-            int candidateNum;
+            int candidateNum, score;
             String candidateName, candidateInfo, encodedImg;
             Bitmap imageUrl;
 
@@ -73,6 +73,7 @@ public class VotingActivity extends AppCompatActivity {
             while (count < jsonArray.length()) {
                 JSONObject object = jsonArray.getJSONObject(count);
                 candidateNum = object.getInt("candidateNum");
+                score = object.getInt("score");
                 candidateName = object.getString("candidateName");
                 candidateInfo = object.getString("candidateInfo");
                 encodedImg = object.getString("img");
@@ -81,7 +82,7 @@ public class VotingActivity extends AppCompatActivity {
                 byte[] decodedByteArray = Base64.decode(encodedImg, Base64.DEFAULT);
                 Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
 
-                items.add(new CandidateItem(userNum, candidateNum, candidateName, candidateInfo, decodedBitmap));
+                items.add(new CandidateItem(userNum, candidateNum, candidateName, candidateInfo, decodedBitmap, score));
                 count++;
             }
 
