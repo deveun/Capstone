@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,6 +43,7 @@ public class VoteListAdapter extends RecyclerView.Adapter<VoteListAdapter.ViewHo
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_vote, null);
+        //v.setBackgroundResource(R.drawable.ing_vote);//////
         return new ViewHolder(v);
     }
 
@@ -54,7 +56,21 @@ public class VoteListAdapter extends RecyclerView.Adapter<VoteListAdapter.ViewHo
         holder.vote_sdate.setText(item.getSdate());
         holder.vote_edate.setText(item.getEdate());
 
-        //리스트 클릭
+        //진행중 & 종료 Cardview 구분
+        try {
+            Date _edate = new SimpleDateFormat("yyyy-MM-dd").parse(item.getEdate());
+            Date _curdate = new Date();
+
+            if (_curdate.compareTo(_edate) > 0){
+                //holder.layout.setBackgroundResource(R.drawable.end_vote);
+                }
+        }
+        catch (Exception e)       {
+            e.printStackTrace();
+            Toast.makeText(context, "Exception", Toast.LENGTH_SHORT).show();        }
+
+
+                //리스트 클릭
         holder.cardview.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,7 +84,7 @@ public class VoteListAdapter extends RecyclerView.Adapter<VoteListAdapter.ViewHo
                     //Toast.makeText(context, new SimpleDateFormat("yyyy-MM-dd").format(_sCal), Toast.LENGTH_SHORT).show();
                     if (_curdate.compareTo(_sdate) >= 0 && _curdate.compareTo(_edate) <= 0) {
 
-                            //server 연결 후보자 리스트가져오기
+                        //server 연결 후보자 리스트가져오기
                             Response.Listener<String> responseListener = new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String response) {
@@ -80,7 +96,8 @@ public class VoteListAdapter extends RecyclerView.Adapter<VoteListAdapter.ViewHo
                                         //화면전환
                                         Intent intent = new Intent(context, VotingActivity.class);
                                         //변수 전달
-                                        intent.putExtra("userNum", item.getuserNum());
+                                        intent.putExtra("userID", item.getuserID());
+                                        intent.putExtra("voteID",item.getvoteNum());
                                         intent.putExtra("voteName", item.getName());
                                         intent.putExtra("voteContent", item.getContent());
                                         intent.putExtra("voteSdate", item.getSdate());
@@ -109,19 +126,20 @@ public class VoteListAdapter extends RecyclerView.Adapter<VoteListAdapter.ViewHo
                             @Override
                             public void onResponse(String response) {
                                 try {
-                                    //Toast.makeText(context, response, Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(context, response, Toast.LENGTH_SHORT).show();
                                     //JSONObject jsonResponse = new JSONObject(response);
                                     //String candidateList = jsonResponse.getString("response");
 
                                     //화면전환
                                     Intent intent = new Intent(context, ResultActivity.class);
                                     //변수 전달
-                                    intent.putExtra("userNum", item.getuserNum());
+                                    intent.putExtra("userID", item.getuserID());
+                                    intent.putExtra("voteID",item.getvoteNum());
                                     intent.putExtra("voteName", item.getName());
                                     intent.putExtra("voteContent", item.getContent());
                                     intent.putExtra("voteSdate", item.getSdate());
                                     intent.putExtra("voteEdate", item.getEdate());
-                                    intent.putExtra("candidateList", response);
+                                    intent.putExtra("result", response);
                                     context.startActivity(intent);
 
                                 } catch (Exception e) {
@@ -129,9 +147,9 @@ public class VoteListAdapter extends RecyclerView.Adapter<VoteListAdapter.ViewHo
                                     Toast.makeText(context, "Exception", Toast.LENGTH_SHORT).show();
                                 }
                             }};
-                        CandidateRequest candidateRequest = new CandidateRequest(item.getvoteNum(), responseListener);
+                        ResultRequest resultRequest = new ResultRequest(item.getvoteNum(), responseListener);
                         RequestQueue queue = Volley.newRequestQueue(context);
-                        queue.add(candidateRequest);
+                        queue.add(resultRequest);
                     }
 
                 } catch (Exception e) {
@@ -152,6 +170,7 @@ public class VoteListAdapter extends RecyclerView.Adapter<VoteListAdapter.ViewHo
         TextView votename;
         TextView vote_sdate;
         TextView vote_edate;
+        LinearLayout layout;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -159,6 +178,7 @@ public class VoteListAdapter extends RecyclerView.Adapter<VoteListAdapter.ViewHo
             votename = (TextView) itemView.findViewById(R.id.vote_name);
             vote_sdate = (TextView) itemView.findViewById(R.id.vote_sdate);
             vote_edate = (TextView) itemView.findViewById(R.id.vote_edate);
+            layout = (LinearLayout) itemView.findViewById(R.id.vote_item_layout);
         }
     }
 }

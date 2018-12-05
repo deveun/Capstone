@@ -36,10 +36,10 @@ public class ResultListAdapter  extends RecyclerView.Adapter<ResultListAdapter.V
     //화면의 리스트 CardView에 값을 넣어주는 작업
     public void onBindViewHolder(ResultListAdapter.ViewHolder holder, int position) {
         final CandidateItem item = items.get(position);
-        holder.resultImg.setImageBitmap(item.getImage());
+    //    holder.resultImg.setImageBitmap(item.getImage());
         holder.resultName.setText(item.getCandidateName());
-        holder.resultScore.setText("득표수: "+item.getScore());
-    }
+    //    holder.resultScore.setText("득표수: "+item.getScore());
+     }
 
     @Override
     public int getItemCount() {

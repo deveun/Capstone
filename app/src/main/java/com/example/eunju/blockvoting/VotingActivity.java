@@ -36,22 +36,22 @@ public class VotingActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_voting);
-        getSupportActionBar().setTitle("후보자 선택");
+        //getSupportActionBar().setTitle("후보자 선택");
 
 
         ////////////////////////
         try {
             //MainActivity 에서 Intent로 변수 받기
             Intent intent = getIntent();
-            final int userNum = intent.getIntExtra("userNum", 0);
-            int voteNum = intent.getIntExtra("voteNum", 0);
+            final String userID = intent.getStringExtra("userID");
+            int voteID = intent.getIntExtra("voteID", 0);
             String voteName = intent.getStringExtra("voteName");
             String voteContent = intent.getStringExtra("voteContent");
             String voteSdate = intent.getStringExtra("voteSdate");
             String voteEdate = intent.getStringExtra("voteEdate");
 
             JSONObject jsonObject = new JSONObject(intent.getStringExtra("candidateList"));
-            JSONArray jsonArray = jsonObject.getJSONArray("response");
+            JSONArray jsonArray = jsonObject.getJSONArray("candidateData");
 
             TextView date = findViewById(R.id.date);
             TextView title = findViewById(R.id.title);
@@ -65,26 +65,27 @@ public class VotingActivity extends AppCompatActivity {
 
             List<CandidateItem> items = new ArrayList<>();
             int count = 0;
-            int candidateNum, score;
+            int candidateID;
             String candidateName, candidateInfo, encodedImg;
             Bitmap imageUrl;
 
             //ArrayList에 후보자 정보를 담은 객체 저장
             while (count < jsonArray.length()) {
                 JSONObject object = jsonArray.getJSONObject(count);
-                candidateNum = object.getInt("candidateNum");
-                score = object.getInt("score");
+                candidateID = object.getInt("candidateID");
+                //score = object.getInt("score");
                 candidateName = object.getString("candidateName");
                 candidateInfo = object.getString("candidateInfo");
-                encodedImg = object.getString("img");
+                //encodedImg = object.getString("img");
 
                 //Base64_encode 된 String값을 다시 decode하여 Bitmap으로 변환시키는 과정
-                byte[] decodedByteArray = Base64.decode(encodedImg, Base64.DEFAULT);
-                Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
+                //byte[] decodedByteArray = Base64.decode(encodedImg, Base64.DEFAULT);
+                //Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
 
-                items.add(new CandidateItem(userNum, candidateNum, candidateName, candidateInfo, decodedBitmap, score));
+                //items.add(new CandidateItem(userID, candidateNum, candidateName, candidateInfo, decodedBitmap, score));
+                items.add(new CandidateItem(userID, voteID, candidateID, candidateName, candidateInfo));
                 count++;
-            }
+             }
 
 
             RecyclerView recyclerView = (RecyclerView) findViewById(R.id.candidate_Recycler);
@@ -96,7 +97,7 @@ public class VotingActivity extends AppCompatActivity {
             CandidateListAdapter adapter = new CandidateListAdapter(VotingActivity.this, items, R.layout.activity_voting);
             adapter.setOnCallBackEvent(new CandidateListAdapter.CallBackListener() {
                 @Override
-                public void onReceivedEvent(final int candidateNum, final String candidateName) {
+                public void onReceivedEvent(final int voteID, final int candidateID, final String candidateName) {
 
                     //Button Click
                     Button voteButton = findViewById(R.id.vote_Button);
@@ -110,7 +111,26 @@ public class VotingActivity extends AppCompatActivity {
                             builder.setPositiveButton("예",
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int which) {
-                                            Toast.makeText(VotingActivity.this, "Send "+userNum+", "+candidateNum, Toast.LENGTH_LONG).show();
+                                            Toast.makeText(VotingActivity.this, "Send "+userID+", "+candidateID, Toast.LENGTH_LONG).show();
+                                            Response.Listener<String> responseListener = new Response.Listener<String>() {
+
+                                                @Override
+                                                public void onResponse(String response) {
+                                                    try {
+                                                        Toast.makeText(VotingActivity.this,response, Toast.LENGTH_SHORT).show();
+                                                    }
+                                                     catch (Exception e) {
+                                                        e.printStackTrace();
+                                                        Toast.makeText(VotingActivity.this, "Exception", Toast.LENGTH_SHORT).show();
+                                                    }
+                                                }
+                                            };
+
+                                            Toast.makeText(VotingActivity.this, userID + voteID + candidateID, Toast.LENGTH_SHORT).show();
+                                            VotingRequest votingRequest = new VotingRequest(userID, voteID, candidateID, responseListener);
+                                            RequestQueue queue = Volley.newRequestQueue(VotingActivity.this);
+                                            queue.add(votingRequest);
+
                                         }
                                     });
                             builder.setNegativeButton("아니오",
@@ -122,7 +142,7 @@ public class VotingActivity extends AppCompatActivity {
                             builder.show();
                         }
                     });
-                    Toast.makeText(VotingActivity.this, candidateName + candidateNum, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(VotingActivity.this, candidateName + candidateID, Toast.LENGTH_SHORT).show();
                 }
             });
             recyclerView.setAdapter(adapter);

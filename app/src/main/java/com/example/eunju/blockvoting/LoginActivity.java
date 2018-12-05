@@ -14,6 +14,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -29,7 +30,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        getSupportActionBar().setTitle("로그인");
+        //getSupportActionBar().setTitle("로그인");
 
         Button Login = (Button) findViewById(R.id.login_Button);
     }
@@ -47,20 +48,24 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 try {
                     //Toast.makeText(LoginActivity.this, user_ID.getText().toString() + user_Password.getText().toString(), Toast.LENGTH_SHORT).show();
-                    //Toast.makeText(LoginActivity.this, response, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this,response, Toast.LENGTH_SHORT).show();
                     JSONObject jsonResponse = new JSONObject(response);
-                    boolean success = jsonResponse.getBoolean("success");
+                    boolean success = jsonResponse.getBoolean("isSuccess");
+
                     if (success) {
-                        int userNum = jsonResponse.getInt("userNum");
-                        String userID = jsonResponse.getString("userID");
+                        JSONArray jsonArray = jsonResponse.getJSONArray("data");
+                        JSONObject object = jsonArray.getJSONObject(0);
+
+                        String userID = object.getString("userID");
+                        String userName = object.getString("userName");
 
                         //화면전환 전에 리스트 정보 받아오기
                         String voteList = new BackgroundTask().execute().get();
-                        //Toast.makeText(LoginActivity.this, voteList, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, voteList, Toast.LENGTH_SHORT).show();
                         //server에서 값이 확인될 경우에만 수행/ 다음화면 전환, 변수 전달
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         //변수 전달
-                        intent.putExtra("userNum", userNum);
+                        intent.putExtra("userName", userName);
                         intent.putExtra("userID", userID);
                         intent.putExtra("voteList", voteList);
                         LoginActivity.this.startActivity(intent);
@@ -89,7 +94,7 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         protected void onPreExecute() {
-            target = "http://deveun.dothome.co.kr/Vote.php";
+            target = "http://23.20.145.133:3000/listOfVote";
         }
 
         @Override
@@ -104,7 +109,7 @@ public class LoginActivity extends AppCompatActivity {
                 while ((temp = bufferedReader.readLine()) != null) {
                     stringBuilder.append(temp + "\n");
                 }
-                //publishProgress();
+                publishProgress();
                 bufferedReader.close();
                 inputStream.close();
                 httpURLConnection.disconnect();
@@ -117,7 +122,6 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         public void onProgressUpdate(Void... values) {
-            //Toast.makeText(LoginActivity.this, voteList, Toast.LENGTH_SHORT).show();
             super.onProgressUpdate(values);
         }
         /*@Override

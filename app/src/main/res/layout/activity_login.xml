@@ -5,29 +5,52 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/background"
     tools:context=".LoginActivity">
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:scaleX="0.3"
+        android:scaleY="0.3"
+        app:srcCompat="@drawable/logo"
+        tools:srcCompat="@drawable/logo" />
 
     <EditText
         android:id="@+id/user_ID"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/user"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="abc" />
+        android:paddingLeft="70dp"
+        android:scaleX="0.7"
+        android:scaleY="0.7"
+        android:text="abc"
+        android:textColor="@android:color/white" />
 
     <EditText
         android:id="@+id/user_Password"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/password"
         android:ems="10"
         android:inputType="textPassword"
-        android:text="123" />
+        android:paddingLeft="70dp"
+        android:scaleX="0.7"
+        android:scaleY="0.7"
+        android:text="123"
+        android:textColor="@android:color/white" />
 
     <Button
         android:id="@+id/login_Button"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/login_button"
         android:onClick="onClickLogin"
-        android:text="LOGIN" />
+        android:scaleX="0.7"
+        android:scaleY="0.7" />
 </LinearLayout>

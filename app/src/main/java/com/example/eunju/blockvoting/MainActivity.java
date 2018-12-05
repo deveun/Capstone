@@ -19,14 +19,15 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        getSupportActionBar().setTitle("투표목록");
+        //getSupportActionBar().setTitle("투표목록");
 
         try {
             Intent intent = getIntent();
-            int userNum = intent.getIntExtra("userNum", 0);
+            String userName = intent.getStringExtra("userName");
             String userID = intent.getStringExtra("userID");
             JSONObject jsonObject = new JSONObject(intent.getStringExtra("voteList"));
-            JSONArray jsonArray = jsonObject.getJSONArray("response");
+            JSONArray jsonArray = jsonObject.getJSONArray("data");
+
 
             int count = 0;
             int voteNum;
@@ -36,16 +37,15 @@ public class MainActivity extends AppCompatActivity {
             //ArrayList에 투표정보를 담은 객체 저장
             while (count < jsonArray.length()) {
                 JSONObject object = jsonArray.getJSONObject(count);
-                voteNum = object.getInt("voteNum");
+                voteNum = object.getInt("voteID");
                 voteName = object.getString("voteName");
                 voteContent = object.getString("voteContent");
                 voteSdate = object.getString("voteSdate");
                 voteEdate = object.getString("voteEdate");
 
-                items.add(new VoteItem(userNum, voteNum, voteName, voteContent, voteSdate, voteEdate));
+                items.add(new VoteItem(userID, voteNum, voteName, voteContent, voteSdate, voteEdate));
                 count++;
             }
-
             RecyclerView recyclerView = (RecyclerView) findViewById(R.id.vote_Recycler);
             LinearLayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
             recyclerView.setHasFixedSize(true);

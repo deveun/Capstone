@@ -31,15 +31,15 @@ public class ResultActivity extends AppCompatActivity {
         try {
             //VoteListAdapter 에서 Intent로 변수 받기
             Intent intent = getIntent();
-            final int userNum = intent.getIntExtra("userNum", 0);
-            int voteNum = intent.getIntExtra("voteNum", 0);
+            String userID = intent.getStringExtra("userID");
+            int voteID = intent.getIntExtra("voteID", 0);
             String voteName = intent.getStringExtra("voteName");
-            String voteContent = intent.getStringExtra("voteContent");
+            //String voteContent = intent.getStringExtra("voteContent");
             String voteSdate = intent.getStringExtra("voteSdate");
             String voteEdate = intent.getStringExtra("voteEdate");
 
             JSONObject jsonObject = new JSONObject(intent.getStringExtra("candidateList"));
-            JSONArray jsonArray = jsonObject.getJSONArray("response");
+            JSONArray jsonArray = jsonObject.getJSONArray("candidateData");
 
             TextView date = findViewById(R.id.result_date);
             TextView title = findViewById(R.id.result_title);
@@ -48,28 +48,29 @@ public class ResultActivity extends AppCompatActivity {
             //elements Text설정 (선택 투표 정보)
             date.setText(voteSdate.concat(getString(R.string.date).concat(voteEdate)));
             title.setText(getString(R.string.title).concat(voteName));
-            content.setText(getString(R.string.content).concat(voteContent));
-            //content.setText(intent.getStringExtra("candidateList"));
+            //content.setText(getString(R.string.content).concat(voteContent));
+            content.setText(intent.getStringExtra("result"));
 
             List<CandidateItem> items = new ArrayList<>();
             int count = 0;
-            int candidateNum, score;
+            int candidateID, score;
             String candidateName, candidateInfo, encodedImg;
 
             //ArrayList에 후보자 정보를 담은 객체 저장
             while (count < jsonArray.length()) {
                 JSONObject object = jsonArray.getJSONObject(count);
-                candidateNum = object.getInt("candidateNum");
-                score = object.getInt("score");
+                candidateID = object.getInt("candidateID");
+                //score = object.getInt("score");
                 candidateName = object.getString("candidateName");
                 candidateInfo = object.getString("candidateInfo");
-                encodedImg = object.getString("img");
+                //encodedImg = object.getString("img");
 
                 //Base64_encode 된 String값을 다시 decode하여 Bitmap으로 변환시키는 과정
-                byte[] decodedByteArray = Base64.decode(encodedImg, Base64.DEFAULT);
-                Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
+                //byte[] decodedByteArray = Base64.decode(encodedImg, Base64.DEFAULT);
+                //Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedByteArray, 0, decodedByteArray.length);
 
-                items.add(new CandidateItem(userNum, candidateNum, candidateName, candidateInfo, decodedBitmap, score));
+                items.add(new CandidateItem(userID, voteID, candidateID , candidateName, candidateInfo));
+                //items.add(new CandidateItem(userID, candidateNum, candidateName, candidateInfo, decodedBitmap, score));
                 count++;
             }
 

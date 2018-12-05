@@ -25,6 +25,7 @@ import org.w3c.dom.Text;
 import java.util.Collection;
 import java.util.List;
 
+import static android.content.Context.CAPTIONING_SERVICE;
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
 public class CandidateListAdapter extends RecyclerView.Adapter<CandidateListAdapter.ViewHolder> {
@@ -44,7 +45,7 @@ public class CandidateListAdapter extends RecyclerView.Adapter<CandidateListAdap
     }
     //CallBack 설정 Step2
     public interface CallBackListener{
-        void onReceivedEvent(int candidateNum, String candidateName);    }
+        void onReceivedEvent(int voteID, int candidateID, String candidateName);    }
 
     public void setOnCallBackEvent(CallBackListener listener){
         mCallBackListener = listener;    }
@@ -58,9 +59,10 @@ public class CandidateListAdapter extends RecyclerView.Adapter<CandidateListAdap
 
     //화면의 리스트 CardView에 값을 넣어주는 작업
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         final CandidateItem item = items.get(position);
         holder.candidateName.setText(item.getCandidateName());
+        holder.cardview.setBackgroundResource(R.drawable.basic_card);
 
         //리스트 클릭 (Dialog Inflate)
         holder.cardview.setOnClickListener(new View.OnClickListener() {
@@ -79,30 +81,32 @@ public class CandidateListAdapter extends RecyclerView.Adapter<CandidateListAdap
                 //Info
                 candidateDetail.setText(item.getCandidateInfo());
                 //img 작업 (Bitmap -> Size -> ImageView)
-                try{
-                    Bitmap image = item.getImage();
-                    Bitmap smaller = Bitmap.createScaledBitmap(image, 100, 50, false);
-                    candidateImg.setImageBitmap(image);
-                } catch(Exception e) {
-                    e.printStackTrace();
-                }
+                //try{
+                //    Bitmap image = item.getImage();
+                //    Bitmap smaller = Bitmap.createScaledBitmap(image, 100, 50, false);
+                //    candidateImg.setImageBitmap(image);
+                //} catch(Exception e) {
+                //    e.printStackTrace();
+                //}
 
 
                 adb.setView(linearLayout);
                 //뒤로가기 불가
                 //adb.setCancelable(false);
 
-                //선택 버튼 클릭
+                //선택 버튼 클릭 view의 background, text color 변경
                 adb.setPositiveButton("선택", new DialogInterface.OnClickListener(){
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (preView!=null) {
-                            preView.setBackgroundColor(context.getResources().getColor(R.color.card));
+                            //preView.setBackgroundColor(context.getResources().getColor(R.color.card));
+                            preView.setBackgroundResource(R.drawable.basic_card);
                         }
-                        view.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
+                        //view.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
+                        view.setBackgroundResource(R.drawable.selected_cand);
                         preView=view;
                         //CallBack 설정 Step3
-                        mCallBackListener.onReceivedEvent(item.getCandidateNum(), item.getCandidateName());
+                        mCallBackListener.onReceivedEvent(item.getVoteID(), item.getCandidateNum(), item.getCandidateName());
                         ///////////
                         //Toast.makeText(context, "ok", Toast.LENGTH_SHORT).show();
                     }});

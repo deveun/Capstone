@@ -6,11 +6,11 @@ import com.android.volley.toolbox.StringRequest;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CandidateRequest extends StringRequest {
-    final static private String URL = "http://23.20.145.133:3000/infoVote";
+public class ResultRequest extends StringRequest {
+    final static private String URL = "http://23.20.145.133:3000/seeballots";
     private Map<String, String> parameters;
 
-    public CandidateRequest(int voteNum, Response.Listener<String> listener){
+    public ResultRequest(int voteNum, Response.Listener<String> listener) {
         super(Method.POST, URL, listener, null);
         parameters = new HashMap<>();
         parameters.put("voteID", String.valueOf(voteNum));
