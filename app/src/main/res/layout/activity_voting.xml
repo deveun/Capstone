@@ -22,7 +22,6 @@
         android:shadowRadius="5.0"
         android:shadowDx="5.0"
         android:shadowDy="5.0"
-        android:shadowColor="@color/shadow"
         android:textSize="12sp" />
 
     <TextView
@@ -37,7 +36,6 @@
         android:shadowRadius="5.0"
         android:shadowDx="5.0"
         android:shadowDy="5.0"
-        android:shadowColor="@color/shadow"
         android:textSize="12sp" />
 
     <TextView
@@ -52,7 +50,6 @@
         android:shadowRadius="5.0"
         android:shadowDx="5.0"
         android:shadowDy="5.0"
-        android:shadowColor="@color/shadow"
         android:textSize="12sp" />
 
     <ImageView

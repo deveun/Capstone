@@ -42,8 +42,7 @@ public class VoteListAdapter extends RecyclerView.Adapter<VoteListAdapter.ViewHo
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_vote, null);
-        //v.setBackgroundResource(R.drawable.ing_vote);//////
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_vote, parent, false);
         return new ViewHolder(v);
     }
 
@@ -53,8 +52,8 @@ public class VoteListAdapter extends RecyclerView.Adapter<VoteListAdapter.ViewHo
         final VoteItem item = items.get(position);
 
         holder.votename.setText(item.getName());
-        holder.vote_sdate.setText(item.getSdate());
-        holder.vote_edate.setText(item.getEdate());
+        holder.vote_sdate.setText(item.getSdate()+" 시작");
+        holder.vote_edate.setText(item.getEdate()+" 종료");
 
         //진행중 & 종료 Cardview 구분
         try {
@@ -62,7 +61,8 @@ public class VoteListAdapter extends RecyclerView.Adapter<VoteListAdapter.ViewHo
             Date _curdate = new Date();
 
             if (_curdate.compareTo(_edate) > 0){
-                //holder.layout.setBackgroundResource(R.drawable.end_vote);
+                holder.vote_statue.setText("종료");
+                holder.vote_statue.setTextColor(context.getResources().getColor(R.color.colorAccent));
                 }
         }
         catch (Exception e)       {
@@ -89,7 +89,7 @@ public class VoteListAdapter extends RecyclerView.Adapter<VoteListAdapter.ViewHo
                                 @Override
                                 public void onResponse(String response) {
                                     try {
-                                        Toast.makeText(context, response, Toast.LENGTH_SHORT).show();
+                                        //Toast.makeText(context, response, Toast.LENGTH_SHORT).show();
                                         //JSONObject jsonResponse = new JSONObject(response);
                                         //String candidateList = jsonResponse.getString("response");
 
@@ -117,8 +117,8 @@ public class VoteListAdapter extends RecyclerView.Adapter<VoteListAdapter.ViewHo
 
 
                     } else if (_curdate.compareTo(_sdate) < 0)
-                        Toast.makeText(context, "투표진행 예정", Toast.LENGTH_SHORT).show();
-                    else {
+                    {//Toast.makeText(context, "투표진행 예정", Toast.LENGTH_SHORT).show();
+                    } else {
                         Toast.makeText(context, "투표기간 종료", Toast.LENGTH_SHORT).show();
 
                         //server 연결 후보자 리스트가져오기
@@ -170,7 +170,7 @@ public class VoteListAdapter extends RecyclerView.Adapter<VoteListAdapter.ViewHo
         TextView votename;
         TextView vote_sdate;
         TextView vote_edate;
-        LinearLayout layout;
+        TextView vote_statue;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -178,7 +178,7 @@ public class VoteListAdapter extends RecyclerView.Adapter<VoteListAdapter.ViewHo
             votename = (TextView) itemView.findViewById(R.id.vote_name);
             vote_sdate = (TextView) itemView.findViewById(R.id.vote_sdate);
             vote_edate = (TextView) itemView.findViewById(R.id.vote_edate);
-            layout = (LinearLayout) itemView.findViewById(R.id.vote_item_layout);
+            vote_statue = (TextView) itemView.findViewById(R.id.vote_statue);
         }
     }
 }

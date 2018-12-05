@@ -21,6 +21,8 @@
         android:id="@+id/vote_Recycler"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal" />
+        android:layout_margin="5dp"
+        android:gravity="center_horizontal"
+        android:layout_weight="1"/>
 
 </LinearLayout>

@@ -12,7 +12,6 @@
         android:layout_marginLeft="9dp"
         android:layout_marginTop="20dp"
         android:layout_marginRight="9dp"
-        card_view:cardBackgroundColor="@color/shadow"
         card_view:cardCornerRadius="3dp"
         card_view:cardElevation="0.02dp">
 

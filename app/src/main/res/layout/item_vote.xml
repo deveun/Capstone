@@ -3,62 +3,82 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:gravity="center_horizontal"
+
     android:orientation="vertical">
 
     <android.support.v7.widget.CardView
         android:id="@+id/vote_item"
-        android:layout_width="360dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="31dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginBottom="10dp"
-        card_view:cardBackgroundColor="@android:color/transparent"
+        android:layout_marginTop="2dp"
         card_view:cardCornerRadius="3dp"
-        card_view:cardElevation="0.05dp">
+        card_view:cardElevation="4dp"
+        card_view:cardUseCompatPadding="true">
 
         <LinearLayout
-            android:id="@+id/vote_item_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/basic_card"
-            android:orientation="vertical">
+            android:orientation="horizontal">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_weight="1"
+                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/vote_sdate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:gravity="center_vertical"
-                    android:text="s" />
-
-                <TextView
-                    android:id="@+id/vote_edate"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/vote_sdate"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="s" />
+
+                    <TextView
+                        android:id="@+id/vote_edate"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_margin="10dp"
+                        android:layout_weight="1"
+                        android:gravity="center_vertical"
+                        android:text="e" />
+
+
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/vote_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="1"
                     android:gravity="center_vertical"
-                    android:text="e" />
-
-
+                    android:text="votename"
+                    android:textSize="18sp"
+                    android:typeface="monospace" />
             </LinearLayout>
 
             <TextView
-                android:id="@+id/vote_name"
+                android:id="@+id/vote_statue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginBottom="10dp"
-                android:gravity="center_vertical"
-                android:text="votename" />
+                android:layout_gravity="center"
+                android:layout_weight="5"
+                android:gravity="center"
+                android:text="진행중"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold" />
         </LinearLayout>
 
     </android.support.v7.widget.CardView>

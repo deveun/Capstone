@@ -99,7 +99,7 @@ public class VotingActivity extends AppCompatActivity {
                 @Override
                 public void onReceivedEvent(final int voteID, final int candidateID, final String candidateName) {
 
-                    //Button Click
+                    // 투표하기 Button Click
                     Button voteButton = findViewById(R.id.vote_Button);
                     voteButton.setOnClickListener(new Button.OnClickListener() {
                         @Override
@@ -107,17 +107,31 @@ public class VotingActivity extends AppCompatActivity {
                             // TODO : click event
                             AlertDialog.Builder builder = new AlertDialog.Builder(VotingActivity.this);
                             builder.setTitle("투표");
-                            builder.setMessage("정말로"+candidateName+"에게 투표하시겠습니까?");
+                            builder.setMessage("정말로 "+candidateName+"에게 투표하시겠습니까?");
                             builder.setPositiveButton("예",
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int which) {
-                                            Toast.makeText(VotingActivity.this, "Send "+userID+", "+candidateID, Toast.LENGTH_LONG).show();
+                                            //Toast.makeText(VotingActivity.this, "Send "+userID+", "+candidateID, Toast.LENGTH_LONG).show();
                                             Response.Listener<String> responseListener = new Response.Listener<String>() {
 
                                                 @Override
                                                 public void onResponse(String response) {
                                                     try {
-                                                        Toast.makeText(VotingActivity.this,response, Toast.LENGTH_SHORT).show();
+                                                        //Toast.makeText(VotingActivity.this,response, Toast.LENGTH_SHORT).show();
+                                                        //isSuccess값에 따라 투표 가능 여부
+                                                        JSONObject jsonResponse = new JSONObject(response);
+                                                        boolean success = jsonResponse.getBoolean("isSuccess");
+                                                        if(success)
+                                                        {
+                                                            Toast.makeText(VotingActivity.this,"투표완료", Toast.LENGTH_SHORT).show();
+                                                            finish();}
+                                                        else
+                                                        {
+                                                            AlertDialog.Builder builder = new AlertDialog.Builder(VotingActivity.this);
+                                                            builder.setMessage("이미 투표하셨습니다.")
+                                                                    .setNegativeButton("확인", null)
+                                                                    .create()
+                                                                    .show(); }
                                                     }
                                                      catch (Exception e) {
                                                         e.printStackTrace();
@@ -125,8 +139,6 @@ public class VotingActivity extends AppCompatActivity {
                                                     }
                                                 }
                                             };
-
-                                            Toast.makeText(VotingActivity.this, userID + voteID + candidateID, Toast.LENGTH_SHORT).show();
                                             VotingRequest votingRequest = new VotingRequest(userID, voteID, candidateID, responseListener);
                                             RequestQueue queue = Volley.newRequestQueue(VotingActivity.this);
                                             queue.add(votingRequest);
@@ -136,13 +148,13 @@ public class VotingActivity extends AppCompatActivity {
                             builder.setNegativeButton("아니오",
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int which) {
-                                            Toast.makeText(VotingActivity.this, "취소", Toast.LENGTH_LONG).show();
+                                            //Toast.makeText(VotingActivity.this, "취소", Toast.LENGTH_LONG).show();
                                         }
                                     });
                             builder.show();
                         }
                     });
-                    Toast.makeText(VotingActivity.this, candidateName + candidateID, Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(VotingActivity.this, candidateName + candidateID, Toast.LENGTH_SHORT).show();
                 }
             });
             recyclerView.setAdapter(adapter);

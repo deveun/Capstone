@@ -32,7 +32,7 @@ public class CandidateListAdapter extends RecyclerView.Adapter<CandidateListAdap
     Context context;
     List<CandidateItem> items;
     int item_layout;
-    View preView;
+    ViewHolder preholder;
     //CallBack 설정 Step1
     private CallBackListener mCallBackListener;
     ///////
@@ -53,7 +53,8 @@ public class CandidateListAdapter extends RecyclerView.Adapter<CandidateListAdap
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_candidate, null);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_candidate, null, false);
+        v.setLayoutParams(new RecyclerView.LayoutParams(RecyclerView.LayoutParams.MATCH_PARENT, RecyclerView.LayoutParams.WRAP_CONTENT));
         return new ViewHolder(v);
     }
 
@@ -62,7 +63,7 @@ public class CandidateListAdapter extends RecyclerView.Adapter<CandidateListAdap
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final CandidateItem item = items.get(position);
         holder.candidateName.setText(item.getCandidateName());
-        holder.cardview.setBackgroundResource(R.drawable.basic_card);
+        //holder.cardview.setBackgroundResource(R.drawable.basic_card);
 
         //리스트 클릭 (Dialog Inflate)
         holder.cardview.setOnClickListener(new View.OnClickListener() {
@@ -98,13 +99,15 @@ public class CandidateListAdapter extends RecyclerView.Adapter<CandidateListAdap
                 adb.setPositiveButton("선택", new DialogInterface.OnClickListener(){
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if (preView!=null) {
-                            //preView.setBackgroundColor(context.getResources().getColor(R.color.card));
-                            preView.setBackgroundResource(R.drawable.basic_card);
+                        if (preholder!=null) {
+                            preholder.cardview.setCardBackgroundColor(context.getResources().getColor(R.color.cardview_light_background));
+                            preholder.candidateName.setTextColor(context.getResources().getColor(android.R.color.tab_indicator_text));
                         }
-                        //view.setBackgroundColor(context.getResources().getColor(R.color.colorPrimary));
-                        view.setBackgroundResource(R.drawable.selected_cand);
-                        preView=view;
+                        holder.cardview.setCardBackgroundColor(context.getResources().getColor(R.color.selected));
+                        holder.candidateName.setTextColor(context.getResources().getColor(R.color.white));
+
+                        preholder = holder;
+
                         //CallBack 설정 Step3
                         mCallBackListener.onReceivedEvent(item.getVoteID(), item.getCandidateNum(), item.getCandidateName());
                         ///////////
