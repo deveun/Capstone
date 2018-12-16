@@ -28,6 +28,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
+
 public class VoteListAdapter extends RecyclerView.Adapter<VoteListAdapter.ViewHolder> {
     Context context;
     List<VoteItem> items;
@@ -119,16 +121,16 @@ public class VoteListAdapter extends RecyclerView.Adapter<VoteListAdapter.ViewHo
                     } else if (_curdate.compareTo(_sdate) < 0)
                     {//Toast.makeText(context, "투표진행 예정", Toast.LENGTH_SHORT).show();
                     } else {
-                        Toast.makeText(context, "투표기간 종료", Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(context, "투표기간 종료", Toast.LENGTH_SHORT).show();
 
                         //server 연결 후보자 리스트가져오기
                         Response.Listener<String> responseListener = new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
                                 try {
-                                    Toast.makeText(context, response, Toast.LENGTH_SHORT).show();
+                                    //Toast.makeText(context, response, Toast.LENGTH_SHORT).show();
                                     //JSONObject jsonResponse = new JSONObject(response);
-                                    //String candidateList = jsonResponse.getString("response");
+                                    //String resultList = jsonResponse.getString("data");
 
                                     //화면전환
                                     Intent intent = new Intent(context, ResultActivity.class);
@@ -139,12 +141,12 @@ public class VoteListAdapter extends RecyclerView.Adapter<VoteListAdapter.ViewHo
                                     intent.putExtra("voteContent", item.getContent());
                                     intent.putExtra("voteSdate", item.getSdate());
                                     intent.putExtra("voteEdate", item.getEdate());
-                                    intent.putExtra("result", response);
+                                    intent.putExtra("resultList", response);
                                     context.startActivity(intent);
 
                                 } catch (Exception e) {
                                     e.printStackTrace();
-                                    Toast.makeText(context, "Exception", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(context, "Exception123", Toast.LENGTH_SHORT).show();
                                 }
                             }};
                         ResultRequest resultRequest = new ResultRequest(item.getvoteNum(), responseListener);

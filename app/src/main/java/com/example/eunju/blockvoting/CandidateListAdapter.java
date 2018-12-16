@@ -45,7 +45,7 @@ public class CandidateListAdapter extends RecyclerView.Adapter<CandidateListAdap
     }
     //CallBack 설정 Step2
     public interface CallBackListener{
-        void onReceivedEvent(int voteID, int candidateID, String candidateName);    }
+        void onReceivedEvent(String voteID, String candidateID, String candidateName);    }
 
     public void setOnCallBackEvent(CallBackListener listener){
         mCallBackListener = listener;    }
@@ -82,14 +82,13 @@ public class CandidateListAdapter extends RecyclerView.Adapter<CandidateListAdap
                 //Info
                 candidateDetail.setText(item.getCandidateInfo());
                 //img 작업 (Bitmap -> Size -> ImageView)
-                //try{
-                //    Bitmap image = item.getImage();
-                //    Bitmap smaller = Bitmap.createScaledBitmap(image, 100, 50, false);
-                //    candidateImg.setImageBitmap(image);
-                //} catch(Exception e) {
-                //    e.printStackTrace();
-                //}
-
+                try{
+                    Bitmap image = item.getImage();
+                    Bitmap smaller = Bitmap.createScaledBitmap(image, 100, 50, false);
+                    candidateImg.setImageBitmap(image);
+                } catch(Exception e) {
+                    e.printStackTrace();
+                }
 
                 adb.setView(linearLayout);
                 //뒤로가기 불가

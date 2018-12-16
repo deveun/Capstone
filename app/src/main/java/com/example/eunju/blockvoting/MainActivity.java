@@ -30,14 +30,14 @@ public class MainActivity extends AppCompatActivity {
 
 
             int count = 0;
-            int voteNum;
+            String voteNum;
             String voteName, voteContent, voteSdate, voteEdate;
             List<VoteItem> items = new ArrayList<>();
 
             //ArrayList에 투표정보를 담은 객체 저장
             while (count < jsonArray.length()) {
                 JSONObject object = jsonArray.getJSONObject(count);
-                voteNum = object.getInt("voteID");
+                voteNum = object.getString("voteID");
                 voteName = object.getString("voteName");
                 voteContent = object.getString("voteContent");
                 voteSdate = object.getString("voteSdate");
